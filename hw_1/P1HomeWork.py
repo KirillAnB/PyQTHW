@@ -2,7 +2,7 @@ from PySide6 import QtWidgets, QtCore
 from Ui_files.p1_home_work import Ui_MainWindow
 
 
-class ControlPanel(QtWidgets.QWidget):
+class ControlPanel(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
 
