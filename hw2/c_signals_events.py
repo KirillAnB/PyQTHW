@@ -100,7 +100,7 @@ class Window(QtWidgets.QWidget):
     #     if event.type() == QtCore.QEvent.Type.Move:
     #         print(f'{time.ctime()} new position is {self.window().x(), self.window().y()}')
     def moveEvent(self, event: QtGui.QMoveEvent) -> None:
-        print(f'{time.ctime()} new position is {self.window().x(), self.window().y()}')
+        print(time.ctime(),event.oldPos(), event.pos())
 
     def resizeEvent(self, event: QtGui.QResizeEvent) -> None:
         print(f'{time.ctime()} resized\nnew size is {self.size()}')
