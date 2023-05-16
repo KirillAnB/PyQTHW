@@ -92,13 +92,7 @@ class Window(QtWidgets.QWidget):
         new_x, new_y = self.ui.spinBoxX.value(), self.ui.spinBoxY.value()
         self.move(new_x, new_y)
 
-    # def event(self, event: QtCore.QEvent) -> bool:
-    #     old_size = self.size()
-    #     old_position = (self.window().x(), self.window().y())
-    #     if event.type() == QtCore.QEvent.Type.Resize:
-    #         print(f'{time.ctime()} resized\nnew size is {self.size()}')
-    #     if event.type() == QtCore.QEvent.Type.Move:
-    #         print(f'{time.ctime()} new position is {self.window().x(), self.window().y()}')
+
     def moveEvent(self, event: QtGui.QMoveEvent) -> None:
         print(time.ctime(),event.oldPos(), event.pos())
 
