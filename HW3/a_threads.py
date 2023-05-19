@@ -27,6 +27,7 @@ class SystemInfo(QtCore.QThread):
             cpu_value = psutil.cpu_percent()
             ram_value = psutil.virtual_memory().percent
             self.systemInfoReceived.emit([cpu_value, ram_value])
+            print(ram_value)
             time.sleep(self.delay)
 
 
@@ -51,10 +52,10 @@ class WeatherHandler(QtCore.QThread):
         self.__delay = delay
 
     def run(self) -> None:
+        self.__status = True
         while self.__status:
             weather_response = requests.get(self.__api_url)
             weather_data = weather_response.json()
-            print(weather_response.status_code)
             self.weather_data_signal.emit(weather_data)
             time.sleep(self.__delay)
 
