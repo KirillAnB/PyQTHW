@@ -57,7 +57,7 @@ class SysInfoWidget(QtWidgets.QWidget):
 
     def onSignalReceived(self, _list):
         self.cpuUsageBar.setValue(_list[0])
-        self.ramUsageBar.setValue(_list[0])
+        self.ramUsageBar.setValue(_list[1])
 
 
     def initSignals(self):
