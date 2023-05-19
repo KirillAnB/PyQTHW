@@ -7,6 +7,7 @@ import requests
 import psutil
 from PySide6 import QtWidgets, QtCore
 
+
 class Window(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
@@ -27,7 +28,6 @@ class SystemInfo(QtCore.QThread):
             cpu_value = psutil.cpu_percent()
             ram_value = psutil.virtual_memory().percent
             self.systemInfoReceived.emit([cpu_value, ram_value])
-            print(ram_value)
             time.sleep(self.delay)
 
 
