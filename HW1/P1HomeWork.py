@@ -1,5 +1,5 @@
 from PySide6 import QtWidgets
-from hw_1.Ui_files.p1_home_work import Ui_MainWindow
+from HW1.Ui_files.p1_home_work import Ui_MainWindow
 
 
 class ControlPanel(QtWidgets.QMainWindow):
