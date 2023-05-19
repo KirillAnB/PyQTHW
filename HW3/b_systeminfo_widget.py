@@ -19,7 +19,7 @@ class SysInfoWidget(QtWidgets.QWidget):
         super().__init__(parent)
         self.initUi()
         self.initSignals()
-        self.initSysLog = SystemInfo()
+        self.initSysLogThread = SystemInfo()
         self.initLogToWidget()
 
     def initUi(self):
@@ -52,8 +52,12 @@ class SysInfoWidget(QtWidgets.QWidget):
         self.setLayout(self.mainLayout)
 
     def initLogToWidget(self):
-        self.initSysLog.connect(lambda data: print(data))
-        self.initSysLog.start()
+        self.initSysLogThread.systemInfoReceived.connect(self.onSignalReceived)
+        self.initSysLogThread.start()
+
+    def onSignalReceived(self, _list):
+        self.cpuUsageBar.setValue(_list[0])
+        self.ramUsageBar.setValue(_list[0])
 
 
     def initSignals(self):
