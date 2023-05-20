@@ -39,6 +39,7 @@ class SysInfoWidget(QtWidgets.QWidget):
 
         self.delayLabel = QtWidgets.QLabel("Delay: ")
         self.delayEdit = QtWidgets.QLineEdit()
+        self.delayEdit.setPlaceholderText(str(1))
         self.delayEdit.setMaxLength(2)
         self.delayEdit.setFixedSize(25, 20)
         self.delayLayout = QtWidgets.QHBoxLayout()
@@ -57,7 +58,7 @@ class SysInfoWidget(QtWidgets.QWidget):
 
     def onSignalReceived(self, _list):
         self.cpuUsageBar.setValue(_list[0])
-        self.ramUsageBar.setValue(_list[0])
+        self.ramUsageBar.setValue(_list[1])
 
 
     def initSignals(self):
