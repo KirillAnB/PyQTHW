@@ -18,7 +18,6 @@ class WeatherWindow(QtWidgets.QWidget):
         super().__init__(parent)
         self.initUi()
         self.initSignals()
-        self.createWeatherThread()
 
 
     def initUi(self):
@@ -65,7 +64,7 @@ class WeatherWindow(QtWidgets.QWidget):
         self.stopButton.clicked.connect(self.stopWeatherThread)
 
     def getWeaterButtonPushed(self):
-        del self.weatherDataObject #удаляем обьект очереди, созданный при инициализации виджета
+        del self.weatherDataObject #не уверен в этом моменте, так пытаюсь не дать создать две очереди
         self.createWeatherThread()
         self.latEdit.setDisabled(True)
         self.longEdit.setDisabled(True)
@@ -90,11 +89,15 @@ class WeatherWindow(QtWidgets.QWidget):
         self.weatherDataText.setText(f"{time.ctime()}, {str(_dict)}")
 
     def stopWeatherThread(self):
-        self.weatherDataText.setText("........No threads running.......")
-        self.latEdit.setDisabled(False)
-        self.longEdit.setDisabled(False)
-        self.delayEdit.setDisabled(False)
-        self.weatherDataObject.setNoneStatus()
+        try:
+            self.weatherDataText.setText("........No threads running.......")
+            self.latEdit.setDisabled(False)
+            self.longEdit.setDisabled(False)
+            self.delayEdit.setDisabled(False)
+            self.weatherDataObject.setNoneStatus()
+        except AttributeError:
+            self.weatherDataText.setText("........No threads running.......")
+
 
 
 
