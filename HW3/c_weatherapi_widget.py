@@ -11,12 +11,14 @@
 """
 from PySide6 import QtWidgets
 from a_threads import WeatherHandler
+import time
 
 class WeatherWindow(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.initUi()
         self.initSignals()
+        self.createWeatherThread()
 
 
     def initUi(self):
@@ -30,6 +32,7 @@ class WeatherWindow(QtWidgets.QWidget):
         self.delayLabel = QtWidgets.QLabel("Delay")
         self.delayEdit = QtWidgets.QLineEdit()
         self.delayEdit.setMaximumWidth(30)
+        self.delayEdit.setPlaceholderText('5')
 
         self.latLonDelayLayout = QtWidgets.QHBoxLayout()
         self.latLonDelayLayout.addWidget(self.latLabel)
@@ -62,7 +65,14 @@ class WeatherWindow(QtWidgets.QWidget):
         self.stopButton.clicked.connect(self.stopWeatherThread)
 
     def getWeaterButtonPushed(self):
+        del self.weatherDataObject #удаляем обьект очереди, созданный при инициализации виджета
+        self.createWeatherThread()
+        self.latEdit.setDisabled(True)
+        self.longEdit.setDisabled(True)
+        self.delayEdit.setDisabled(True)
+        self.weatherDataObject.start()
 
+    def createWeatherThread(self):
         if self.latEdit.text() and self.longEdit.text():
             lat, lon = float(self.latEdit.text()), float(self.longEdit.text())
         else:
@@ -73,13 +83,19 @@ class WeatherWindow(QtWidgets.QWidget):
             delay_value = int(self.delayEdit.text())
             self.weatherDataObject.setDelay(delay_value)
         self.weatherDataObject.weather_data_signal.connect(self.weatherDataEmitted)
-        self.weatherDataObject.start()
+
 
     def weatherDataEmitted(self, _dict):
-        self.weatherDataText.append(str(_dict))
+
+        self.weatherDataText.setText(f"{time.ctime()}, {str(_dict)}")
 
     def stopWeatherThread(self):
-        pass
+        self.weatherDataText.setText("........No threads running.......")
+        self.latEdit.setDisabled(False)
+        self.longEdit.setDisabled(False)
+        self.delayEdit.setDisabled(False)
+        self.weatherDataObject.setNoneStatus()
+
 
 
 

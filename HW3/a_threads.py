@@ -56,6 +56,10 @@ class WeatherHandler(QtCore.QThread):
 
         self.__delay = delay
 
+    def setNoneStatus(self):
+
+        self.__status = None
+
     def run(self) -> None:
         self.__status = True
         while self.__status:
