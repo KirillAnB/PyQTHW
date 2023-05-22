@@ -18,17 +18,22 @@ class SystemInfo(QtCore.QThread):
     systemInfoReceived = QtCore.Signal(list)
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.delay = None
+        self.__delay = None
+
+    def setDelay(self, delay) -> None:
+
+        self.__delay = delay
+
 
     def run(self) -> None:
-        if self.delay is None:
-            self.delay = 1
+        if self.__delay is None:
+            self.__delay = 1
 
         while True:
             cpu_value = psutil.cpu_percent()
             ram_value = psutil.virtual_memory().percent
             self.systemInfoReceived.emit([cpu_value, ram_value])
-            time.sleep(self.delay)
+            time.sleep(self.__delay)
 
 
 class WeatherHandler(QtCore.QThread):

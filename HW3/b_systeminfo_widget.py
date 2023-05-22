@@ -62,7 +62,12 @@ class SysInfoWidget(QtWidgets.QWidget):
 
 
     def initSignals(self):
-        pass
+        self.delayEdit.textChanged.connect(self.delayChanged)
+
+    def delayChanged(self):
+        new_delay = int(self.delayEdit.text())
+        self.initSysLogThread.setDelay(new_delay)
+
 
 
 
