@@ -9,9 +9,12 @@
 3. поле для вывода информации о погоде в указанных координатах
 4. поток необходимо запускать и останавливать при нажатие на кнопку
 """
-from PySide6 import QtWidgets
-from a_threads import WeatherHandler
 import time
+
+from PySide6 import QtWidgets, QtCore
+
+from a_threads import WeatherHandler
+
 
 class WeatherWindow(QtWidgets.QWidget):
     def __init__(self, parent=None):
@@ -19,14 +22,15 @@ class WeatherWindow(QtWidgets.QWidget):
         self.initUi()
         self.initSignals()
 
-
-    def initUi(self):
+    def initUi(self) -> None:
 
         self.latLabel = QtWidgets.QLabel("Lat.")
         self.latEdit = QtWidgets.QLineEdit()
+        self.latEdit.setPlaceholderText(str(9.179218458361987))
 
         self.longLable = QtWidgets.QLabel("Long.")
         self.longEdit = QtWidgets.QLineEdit()
+        self.longEdit.setPlaceholderText(str(123.46353346347293))
 
         self.delayLabel = QtWidgets.QLabel("Delay")
         self.delayEdit = QtWidgets.QLineEdit()
@@ -57,54 +61,46 @@ class WeatherWindow(QtWidgets.QWidget):
 
         self.setLayout(self.mainWeaterLayout)
 
-
-    def initSignals(self):
+    def initSignals(self) -> None:
 
         self.getWeaterButton.clicked.connect(self.getWeaterButtonPushed)
         self.stopButton.clicked.connect(self.stopWeatherThread)
 
-    def getWeaterButtonPushed(self):
-        del self.weatherDataObject #не уверен в этом моменте, так пытаюсь не дать создать две очереди
+    def getWeaterButtonPushed(self) -> None:
+
         self.createWeatherThread()
         self.latEdit.setDisabled(True)
         self.longEdit.setDisabled(True)
         self.delayEdit.setDisabled(True)
         self.weatherDataObject.start()
 
-    def createWeatherThread(self):
+    def createWeatherThread(self) -> None:
+
         if self.latEdit.text() and self.longEdit.text():
             lat, lon = float(self.latEdit.text()), float(self.longEdit.text())
         else:
             lat, lon = 9.179218458361987, 123.46353346347293
-
         self.weatherDataObject = WeatherHandler(lat, lon)
         if self.delayEdit.text():
             delay_value = int(self.delayEdit.text())
             self.weatherDataObject.setDelay(delay_value)
         self.weatherDataObject.weather_data_signal.connect(self.weatherDataEmitted)
 
-
-    def weatherDataEmitted(self, _dict):
+    def weatherDataEmitted(self, _dict) -> None:
 
         self.weatherDataText.setText(f"{time.ctime()}, {str(_dict)}")
 
-    def stopWeatherThread(self):
+    def stopWeatherThread(self) -> None:
+
         try:
-            self.weatherDataText.setText("........No threads running.......")
+            self.weatherDataText.setText("........No weather data threads running.......")
+            self.weatherDataText.setAlignment(QtCore.Qt.AlignmentFlag())
             self.latEdit.setDisabled(False)
             self.longEdit.setDisabled(False)
             self.delayEdit.setDisabled(False)
             self.weatherDataObject.setNoneStatus()
         except AttributeError:
             self.weatherDataText.setText("........No threads running.......")
-
-
-
-
-
-
-
-
 
 
 if __name__ == '__main__':

@@ -26,6 +26,7 @@ class SystemInfo(QtCore.QThread):
 
 
     def run(self) -> None:
+
         if self.__delay is None:
             self.__delay = 1
 
@@ -56,11 +57,12 @@ class WeatherHandler(QtCore.QThread):
 
         self.__delay = delay
 
-    def setNoneStatus(self):
+    def setNoneStatus(self) -> None:
 
         self.__status = None
 
     def run(self) -> None:
+
         self.__status = True
         while self.__status:
             weather_response = requests.get(self.__api_url)

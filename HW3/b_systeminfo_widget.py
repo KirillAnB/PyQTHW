@@ -22,7 +22,8 @@ class SysInfoWidget(QtWidgets.QWidget):
         self.initSysLogThread = SystemInfo()
         self.initLogToWidget()
 
-    def initUi(self):
+    def initUi(self) -> None:
+
         self.setWindowTitle("System info window")
 
         self.cpuLabel = QtWidgets.QLabel("CPU usage")
@@ -52,19 +53,23 @@ class SysInfoWidget(QtWidgets.QWidget):
         self.mainLayout.addLayout(self.delayLayout)
         self.setLayout(self.mainLayout)
 
-    def initLogToWidget(self):
+    def initLogToWidget(self) -> None:
+
         self.initSysLogThread.systemInfoReceived.connect(self.onSignalReceived)
         self.initSysLogThread.start()
 
-    def onSignalReceived(self, _list):
+    def onSignalReceived(self, _list) -> None:
+
         self.cpuUsageBar.setValue(_list[0])
         self.ramUsageBar.setValue(_list[1])
 
 
-    def initSignals(self):
+    def initSignals(self) -> None:
+
         self.delayEdit.textChanged.connect(self.delayChanged)
 
-    def delayChanged(self):
+    def delayChanged(self) -> None:
+
         new_delay = int(self.delayEdit.text())
         self.initSysLogThread.setDelay(new_delay)
 
